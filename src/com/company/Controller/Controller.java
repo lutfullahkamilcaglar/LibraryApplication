@@ -29,8 +29,6 @@ public class Controller {
             authManager.login();
         } else if (selection == 2) {
             authManager.register();
-        } else {
-
         }
 
     }
