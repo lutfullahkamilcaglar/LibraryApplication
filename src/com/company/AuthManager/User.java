@@ -9,4 +9,8 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    public boolean checkCredentials(User user) {
+        return user.username.equals(this.username) && user.password.equals(this.password);
+    }
 }

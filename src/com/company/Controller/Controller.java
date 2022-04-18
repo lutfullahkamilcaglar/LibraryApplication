@@ -1,21 +1,32 @@
 package com.company.Controller;
 
 import com.company.AuthManager.AuthManager;
-import com.company.InputManager.InputManager;
-import com.company.Options;
+import com.company.util.InputManager.InputManager;
+import com.company.Library.LibraryOptions;
 
 public class Controller {
     private InputManager inputManager;
-    private Options options;
+    private LibraryOptions libraryOptions;
     private AuthManager authManager;
 
-    public Controller(InputManager inputManager, Options options, AuthManager authManager) {
+    public Controller(InputManager inputManager, LibraryOptions options, AuthManager authManager) {
         this.inputManager = inputManager;
-        this.options = options;
+        this.libraryOptions = options;
         this.authManager = authManager;
     }
 
     public void startApplication() {
+        while (true) {
+            loginSection();
+            if (authManager.getIsAuthenticated()){
+                libraryOptions.startListingOptions();
+                authManager.logout();
+            }
+        }
+    }
+
+
+    private void loginSection() {
         String listing = """
                 Welcome. Please make a selection.\s
                 Your options:\s
@@ -30,6 +41,5 @@ public class Controller {
         } else if (selection == 2) {
             authManager.register();
         }
-
     }
 }

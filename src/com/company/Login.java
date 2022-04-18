@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.InputManager.InputManager;
+import com.company.util.InputManager.InputManager;
 
 public class Login {
 
