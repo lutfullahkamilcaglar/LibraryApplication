@@ -1,6 +1,6 @@
 package com.company.AuthManager;
 
-import com.company.InputManager.InputManager;
+import com.company.util.InputManager.InputManager;
 
 public class AuthManagerImpl implements AuthManager {
 
@@ -20,10 +20,18 @@ public class AuthManagerImpl implements AuthManager {
     public void login() {
         String username = inputManager.getStringWithDescription("Enter your username: ");
         String password = inputManager.getStringWithDescription("Enter your password: ");
-        User user = new User(username, password);
-        boolean loginSuccessful = userList.contains(user);
+        User userInput = new User(username, password);
+        boolean loginSuccessful = false;
+        for (User user : userList) {
+            if (user.checkCredentials(userInput)){
+                loginSuccessful = true;
+                break;
+            }
+        }
         if (loginSuccessful){
             isAuthenticated = true;
+        } else {
+            System.out.println("Login failed!");
         }
     }
 

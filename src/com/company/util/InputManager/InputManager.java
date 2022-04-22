@@ -1,4 +1,4 @@
-package com.company.InputManager;
+package com.company.util.InputManager;
 
 import java.util.Scanner;
 

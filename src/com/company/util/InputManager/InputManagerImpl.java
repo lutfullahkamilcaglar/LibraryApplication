@@ -1,4 +1,4 @@
-package com.company.InputManager;
+package com.company.util.InputManager;
 
 public class InputManagerImpl implements InputManager {
 
