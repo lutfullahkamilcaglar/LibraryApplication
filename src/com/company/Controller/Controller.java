@@ -25,7 +25,6 @@ public class Controller {
         }
     }
 
-
     private void loginSection() {
         String listing = """
                 Welcome. Please make a selection.\s

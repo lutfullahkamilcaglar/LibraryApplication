@@ -22,12 +22,12 @@ public class LibraryOptions {
             }
         }
     }
-
+// list all books da book category secenegi olarak degistir.
     private boolean listOptions() {
         String listing = """
                 Welcome. Please make a chose.\s
                 Your options:\s
-                1. List all books
+                1. List all books 
                 2. Add a book
                 3. Delete a book
                 4. Borrow a book
@@ -42,7 +42,7 @@ public class LibraryOptions {
             case 3 -> deleteBook();
             case 4 -> borrowBook();
             case 5 -> returnBook();
-            case 6 -> System.out.println("logged out");
+            case 6 -> System.out.println("Logged out");
             default -> System.out.println("There is no such options...");
         }
 
