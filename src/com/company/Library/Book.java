@@ -4,14 +4,20 @@ import java.util.Random;
 
 public class Book {
 
-    int id;
-    String name;
-    int pageCount;
+    private final int id;
+    private final String name;
+    private final int pageCount;
+    private boolean isBorrowed;
+
+    public int getId() {
+        return id;
+    }
 
     public Book(String name, int pageCount) {
         this.name = name;
         this.pageCount = pageCount;
         this.id = generateId();
+        this.isBorrowed = false;
     }
 
     private int generateId() {
@@ -25,8 +31,17 @@ public class Book {
                 id: %d
                 name: %s
                 page count: %d
-                """, this.id, this.name, this.pageCount);
+                is it borrowed: %b
+                """, this.id, this.name, this.pageCount, this.isBorrowed);
         System.out.println(info);
+    }
+
+    public boolean isBorrowed() {
+        return isBorrowed;
+    }
+
+    public void setBorrowed(boolean borrowed) {
+        isBorrowed = borrowed;
     }
 }
 

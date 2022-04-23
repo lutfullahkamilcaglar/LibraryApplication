@@ -1,5 +1,6 @@
 package com.company.Library;
 
+import com.company.UserManager.UserManager;
 import com.company.util.InputManager.InputManager;
 
 import java.util.ArrayList;
@@ -8,33 +9,39 @@ import java.util.ArrayList;
 public class LibraryOptions {
 
     private final InputManager inputManager;
+    private final UserManager userManager;
     private final ArrayList<Book> bookList = new ArrayList<>();
 
-    public LibraryOptions(InputManager inputManager) {
+    public LibraryOptions(InputManager inputManager, UserManager userManager) {
         this.inputManager = inputManager;
+        this.userManager = userManager;
     }
 
     public void startListingOptions() {
         while (true) {
             boolean isLogOut = listOptions();
-            if (isLogOut){
+            if (isLogOut) {
                 break;
             }
         }
     }
-// list all books da book category secenegi olarak degistir.
+
+    // list all books da book category secenegi olarak degistir.
     private boolean listOptions() {
         String listing = """
-                Welcome. Please make a chose.\s
-                Your options:\s
-                1. List all books 
+                Welcome. Please make a chose.
+                Your options:
+                1. List all books
                 2. Add a book
                 3. Delete a book
                 4. Borrow a book
                 5. Return a book
-                6. Logout
-                To make the chose insert the number of the option.""";
+                6. List borrowed books
+                7. Logout
+                To make the chose insert the number of the option.
+                """;
         int selection = inputManager.getIntWithDescription(listing);
+        boolean isLoggedOut = false;
 
         switch (selection) {
             case 1 -> listAllBooks();
@@ -42,11 +49,15 @@ public class LibraryOptions {
             case 3 -> deleteBook();
             case 4 -> borrowBook();
             case 5 -> returnBook();
-            case 6 -> System.out.println("Logged out");
+            case 6 -> listBorrowedBooks();
+            case 7 -> {
+                isLoggedOut = true;
+                System.out.println("Logged out");
+            }
             default -> System.out.println("There is no such options...");
         }
 
-        return selection == 6;
+        return isLoggedOut;
     }
 
     void listAllBooks() {
@@ -63,7 +74,7 @@ public class LibraryOptions {
 
     void deleteBook() {
         int bookId = inputManager.getIntWithDescription("Input book id to delete!");
-        bookList.removeIf(book -> bookId == book.id);
+        bookList.removeIf(book -> bookId == book.getId());
         System.out.println("Book id: " + bookId + " has been deleted!");
         /*bookList.forEach(book -> {
                     if (bookId == book.id) {
@@ -78,18 +89,27 @@ public class LibraryOptions {
         }*/
     }
 
+    void listBorrowedBooks() {
+        userManager.listUserBorrowedBooks();
+    }
     void borrowBook() {
-        System.out.println("You choose Borrow a book option" +
-                "\nEnter the name of the book you want to borrow.");
-        String brrwbook = inputManager.getString();
-        System.out.println("You borrowed " + brrwbook + " Please return in 30 days.");
+        int bookId = inputManager.getIntWithDescription("Input book id to borrow!");
+        bookList.forEach( book -> {
+            if(bookId == book.getId()) {
+                book.setBorrowed(true);
+                userManager.getUser().addOrReturnBooks(book, true);
+            }
+        });
     }
 
     void returnBook() {
-        System.out.println("You choose Return a book option " +
-                "\nEnter the name of the book you want to return to you library.");
-        String retrnbook = inputManager.getString();
-        System.out.println(retrnbook + " has been returned to your library.");
+        int bookId = inputManager.getIntWithDescription("Input book id to return!");
+        bookList.forEach( book -> {
+            if(bookId == book.getId()) {
+                book.setBorrowed(false);
+                userManager.getUser().addOrReturnBooks(book, false);
+            }
+        });
     }
 
 }

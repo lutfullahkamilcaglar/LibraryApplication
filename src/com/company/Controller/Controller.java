@@ -1,44 +1,55 @@
 package com.company.Controller;
 
-import com.company.AuthManager.AuthManager;
+import com.company.UserManager.UserManager;
 import com.company.util.InputManager.InputManager;
 import com.company.Library.LibraryOptions;
 
 public class Controller {
-    private InputManager inputManager;
-    private LibraryOptions libraryOptions;
-    private AuthManager authManager;
+    private final InputManager inputManager;
+    private final LibraryOptions libraryOptions;
+    private final UserManager authManager;
 
-    public Controller(InputManager inputManager, LibraryOptions options, AuthManager authManager) {
+    public Controller(
+            InputManager inputManager,
+            LibraryOptions options,
+            UserManager userManager
+    ) {
         this.inputManager = inputManager;
         this.libraryOptions = options;
-        this.authManager = authManager;
+        this.authManager = userManager;
     }
 
+    // startApplication -> main function of the application
     public void startApplication() {
         while (true) {
-            loginSection();
-            if (authManager.getIsAuthenticated()){
+            boolean isExit = loginSection();
+            if (isExit) {
+                break;
+            }
+            if (authManager.getIsAuthenticated()) {
                 libraryOptions.startListingOptions();
                 authManager.logout();
             }
         }
     }
 
-    private void loginSection() {
+    private boolean loginSection() {
         String listing = """
                 Welcome. Please make a selection.\s
                 Your options:\s
                 1. Login
                 2. Register
+                3. Exit
                 To make the chose insert the number of the option.""";
 
         int selection = inputManager.getIntWithDescription(listing);
 
-        if (selection == 1){
-            authManager.login();
-        } else if (selection == 2) {
-            authManager.register();
+        switch (selection) {
+            case 1 -> authManager.login();
+            case 2 -> authManager.register();
+            case 3 -> { return true; }
+            default -> {}
         }
+        return false;
     }
 }

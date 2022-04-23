@@ -1,18 +1,32 @@
-package com.company.AuthManager;
+package com.company.UserManager;
 
 import com.company.util.InputManager.InputManager;
 
-public class AuthManagerImpl implements AuthManager {
+public class UserManagerImpl implements UserManager {
 
     private final InputManager inputManager;
 
-    private Boolean isAuthenticated = false;
-
+    private int currentUserId = 0;
     public Boolean getIsAuthenticated() {
-        return isAuthenticated;
+        return currentUserId != 0;
     }
 
-    public AuthManagerImpl(InputManager inputManager) {
+    @Override
+    public User getUser() {
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).id == currentUserId) {
+                return userList.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void listUserBorrowedBooks() {
+        getUser().listBorrowedBooks();
+    }
+
+    public UserManagerImpl(InputManager inputManager) {
         this.inputManager = inputManager;
     }
 
@@ -25,12 +39,11 @@ public class AuthManagerImpl implements AuthManager {
         for (User user : userList) {
             if (user.checkCredentials(userInput)){
                 loginSuccessful = true;
+                currentUserId = user.id;
                 break;
             }
         }
-        if (loginSuccessful){
-            isAuthenticated = true;
-        } else {
+        if (!loginSuccessful){
             System.out.println("Login failed!");
         }
     }
@@ -41,11 +54,11 @@ public class AuthManagerImpl implements AuthManager {
         String password = inputManager.getStringWithDescription("Enter new password: ");
         User newUser = new User(username, password);
         userList.add(newUser);
-        isAuthenticated = true;
+        currentUserId = newUser.id;
     }
 
     @Override
     public void logout() {
-        isAuthenticated = false;
+        currentUserId = 0;
     }
 }

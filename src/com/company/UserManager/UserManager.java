@@ -1,8 +1,8 @@
-package com.company.AuthManager;
+package com.company.UserManager;
 
 import java.util.ArrayList;
 
-public interface AuthManager {
+public interface UserManager {
 
     ArrayList<User> userList = new ArrayList<>();
 
@@ -16,4 +16,7 @@ public interface AuthManager {
 
     Boolean getIsAuthenticated();
 
+    User getUser();
+
+    void listUserBorrowedBooks();
 }
